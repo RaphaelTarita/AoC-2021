@@ -8,6 +8,6 @@ object Day0 : AoCDay {
     override val day: LocalDate = day(0)
 
     override fun execute() {
-        println("Test day executed successfully (this is Day \"0\", which is intended either for testing the framework or as a fallback")
+        println("Test day executed successfully (this is Day \"0\", which is intended either for testing the framework or as a fallback)")
     }
 }
