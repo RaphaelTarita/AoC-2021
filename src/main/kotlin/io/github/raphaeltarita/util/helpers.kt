@@ -442,6 +442,14 @@ fun String.capitalizeFirst(): String {
     }
 }
 
+fun Char.repeat(n: Int): String {
+    return when (n) {
+        0 -> ""
+        1 -> this.toString()
+        else -> String(CharArray(n) { this })
+    }
+}
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // Path & IO
 
@@ -468,6 +476,14 @@ fun pathToday(): Path = pathOfDay(today())
 fun fileOfDay(day: LocalDate): File = File("input/day${day.dayOfMonth}.txt")
 fun fileOfDay(num: Int): File = fileOfDay(day(num))
 fun fileToday(): File = fileOfDay(today())
+
+fun outputPathOfDay(day: LocalDate): Path = Path("output/day${day.dayOfMonth}.txt")
+fun outputPathOfDay(num: Int): Path = outputPathOfDay(day(num))
+fun outputPathToday(): Path = outputPathOfDay(today())
+
+fun outputFileOfDay(day: LocalDate): File = File("output/day${day.dayOfMonth}.txt")
+fun outputFileOfDay(num: Int): File = outputFileOfDay(day(num))
+fun outputFileToday(): File = outputFileOfDay(today())
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // generic type operations

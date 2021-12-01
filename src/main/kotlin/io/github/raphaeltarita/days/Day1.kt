@@ -15,19 +15,15 @@ object Day1 : AoCDay {
             .map { it.toInt() }
     }
 
-    override fun executePart1() {
-        val result = getInts().zipWithNext()
+    override fun executePart1(): Int {
+        return getInts().zipWithNext()
             .count { (a, b) -> b > a }
-
-        println(result)
     }
 
-    override fun executePart2() {
-        val result = getInts().windowed(3)
+    override fun executePart2(): Int {
+        return getInts().windowed(3)
             .map { it.sum() }
             .zipWithNext()
             .count { (a, b) -> b > a }
-
-        println(result)
     }
 }
