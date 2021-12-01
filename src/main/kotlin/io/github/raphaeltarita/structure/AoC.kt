@@ -29,8 +29,10 @@ import io.github.raphaeltarita.days.Day9
 import io.github.raphaeltarita.util.day
 import io.github.raphaeltarita.util.mapPair
 import io.github.raphaeltarita.util.today
+import kotlinx.datetime.LocalDate
 
 object AoC {
+    private fun separator(part: Int): String = "============================================ Part $part ============================================"
     private val FALLBACK = Day0
     private val executionlist = mapOf(
         Day0.mapPair,
@@ -61,18 +63,21 @@ object AoC {
         Day25.mapPair,
     )
 
-    fun execute(num: Int) {
-        (executionlist[day(num)] ?: FALLBACK).execute()
+    private fun execute(day: AoCDay) {
+        println(separator(1))
+        day.executePart1()
+        println(separator(2))
+        day.executePart2()
     }
 
-    fun executeToday() {
-        (executionlist[today()] ?: FALLBACK).execute()
-    }
+    fun execute(d: LocalDate) = execute(executionlist[d] ?: FALLBACK)
+    fun execute(num: Int) = execute(day(num))
+    fun executeToday() = execute(today())
 
     fun executeAll() {
         for ((_, day) in executionlist) {
             if (day === Day0) continue
-            day.execute()
+            execute(day)
         }
     }
 }

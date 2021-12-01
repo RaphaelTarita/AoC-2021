@@ -4,5 +4,6 @@ import kotlinx.datetime.LocalDate
 
 interface AoCDay {
     val day: LocalDate
-    fun execute()
+    fun executePart1()
+    fun executePart2()
 }
