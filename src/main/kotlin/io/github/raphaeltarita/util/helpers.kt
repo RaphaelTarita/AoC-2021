@@ -249,7 +249,7 @@ fun <T> Collection<T>.optimizeReadonlyCollection(): Collection<T> {
     }
 }
 
-internal fun <T, I : Iterable<T>> I.exactlyOrNull(n: Int): I? {
+fun <T, I : Iterable<T>> I.exactlyOrNull(n: Int): I? {
     return when (this) {
         is List<*> -> if (size == n) this else null
         else -> {
@@ -263,7 +263,7 @@ internal fun <T, I : Iterable<T>> I.exactlyOrNull(n: Int): I? {
     }
 }
 
-internal fun <T, I : Iterable<T>> I.exactly(n: Int): I {
+fun <T, I : Iterable<T>> I.exactly(n: Int): I {
     return exactlyOrNull(n) ?: throw IllegalArgumentException("Iterable does not have exactly $n elements")
 }
 
