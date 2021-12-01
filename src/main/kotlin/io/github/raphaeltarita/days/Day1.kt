@@ -21,8 +21,7 @@ object Day1 : AoCDay {
     }
 
     override fun executePart2(): Int {
-        return getInts().windowed(3)
-            .map { it.sum() }
+        return getInts().windowed(3) { it.sum() }
             .zipWithNext()
             .count { (a, b) -> b > a }
     }
