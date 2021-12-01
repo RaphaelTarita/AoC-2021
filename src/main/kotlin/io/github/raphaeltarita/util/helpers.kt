@@ -488,6 +488,8 @@ fun outputFileToday(): File = outputFileOfDay(today())
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // generic type operations
 
+typealias Twin<T> = Pair<T, T>
+
 inline fun <reified E> ignoreError(block: () -> Unit) {
     try {
         block()

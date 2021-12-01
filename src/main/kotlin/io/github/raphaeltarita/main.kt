@@ -4,5 +4,5 @@ import io.github.raphaeltarita.structure.AoC
 
 fun main() {
     print(AoC.executeSimpleToday().formatResult())
-    AoC.printTimedToday(100)
+    AoC.printTimedToday(100, 100)
 }
