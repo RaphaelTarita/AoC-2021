@@ -30,7 +30,7 @@ object Day2 : AoCDay {
     }
 
     override fun executePart2(): Int {
-        val pair = getPairs()
+        val triple = getPairs()
             .fold(Triple(0, 0, 0)) { (horizontal, depth, aim), (dir, v) ->
                 when (dir) {
                     "forward" -> Triple(horizontal + v, depth + aim * v, aim)
@@ -40,6 +40,6 @@ object Day2 : AoCDay {
                 }
             }
 
-        return pair.first * pair.second
+        return triple.first * triple.second
     }
 }
