@@ -6,6 +6,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayAt
+import java.io.File
+import java.nio.file.Path
 
 fun day(num: Int): LocalDate {
     return if (num == 0) {
@@ -22,3 +24,9 @@ val TimeZone.Companion.EST: TimeZone
 
 val AoCDay.mapPair: Pair<LocalDate, AoCDay>
     get() = day to this
+
+val AoCDay.inputPath: Path
+    get() = pathOfDay(day)
+
+val AoCDay.inputFile: File
+    get() = fileOfDay(day)
