@@ -7,11 +7,11 @@ import kotlinx.datetime.LocalDate
 object Day24 : AoCDay {
     override val day: LocalDate = day(24)
 
-    override fun executePart1() {
-        TODO("Day 24 (part 1) not implemented yet")
+    override fun executePart1(): String {
+        return "Day 24 (part 1) not implemented yet"
     }
 
-    override fun executePart2() {
-        TODO("Day 24 (part 2) not implemented yet")
+    override fun executePart2(): String {
+        return "Day 24 (part 2) not implemented yet"
     }
 }
