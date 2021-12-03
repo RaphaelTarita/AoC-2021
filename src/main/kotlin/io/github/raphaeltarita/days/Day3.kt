@@ -9,15 +9,14 @@ import kotlin.io.path.readLines
 object Day3 : AoCDay {
     override val day: LocalDate = day(3)
 
-    private fun getInputMatrix(): List<List<Char>> {
+    private fun getInput(): List<String> {
         return inputPath.readLines()
-            .map { it.toList() }
     }
 
     override fun executePart1(): Int {
-        val input = getInputMatrix()
+        val input = getInput()
         val isize = input.size
-        val linesize = input.first().size
+        val linesize = input.first().length
         val gamma = StringBuilder()
         val epsilon = StringBuilder()
 
@@ -35,7 +34,7 @@ object Day3 : AoCDay {
         return gamma.toString().toInt(2) * epsilon.toString().toInt(2)
     }
 
-    private fun doFilter(pos: Int, input: List<List<Char>>, majority: Boolean): List<List<Char>> {
+    private fun doFilter(pos: Int, input: List<String>, majority: Boolean): List<String> {
         val (zeros, ones) = input.partition { it[pos] == '0' }
         return if (zeros.size > ones.size == majority) {
             zeros
@@ -45,10 +44,10 @@ object Day3 : AoCDay {
     }
 
     override fun executePart2(): Int {
-        val input = getInputMatrix()
+        val input = getInput()
         var oxygen = input
         var co2 = input
-        val linesize = input.first().size
+        val linesize = input.first().length
 
         for (i in 0 until linesize) {
             if (oxygen.size > 1) {
@@ -58,6 +57,6 @@ object Day3 : AoCDay {
                 co2 = doFilter(i, co2, false)
             }
         }
-        return oxygen.single().joinToString("").toInt(2) * co2.single().joinToString("").toInt(2)
+        return oxygen.single().toInt(2) * co2.single().toInt(2)
     }
 }
