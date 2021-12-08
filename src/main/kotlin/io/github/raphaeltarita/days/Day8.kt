@@ -106,6 +106,7 @@ object Day8 : AoCDay {
         val (uniqueLength, other) = from.partition(this::isUniqueNumberLength)
 
         for (segments in uniqueLength.sortedBy { it.length }) {
+            if (possibilities.values.all { it.size == 1 }) break
             when (segments.length) {
                 2 -> narrow(Digit.ONE, segments)
                 3 -> narrow(Digit.SEVEN, segments)
@@ -114,6 +115,7 @@ object Day8 : AoCDay {
             }
         }
         for (segments in other.sortedBy { it.length }) {
+            if (possibilities.values.all { it.size == 1 }) break
             when (segments.length) {
                 5 -> narrowMultiple(digitsLeft intersect DIGITS_LEN_5, segments)
                 6 -> narrowMultiple(digitsLeft intersect DIGITS_LEN_6, segments)
