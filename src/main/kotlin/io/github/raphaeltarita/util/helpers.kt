@@ -268,7 +268,7 @@ fun <T, I : Iterable<T>> I.exactly(n: Int): I {
     return exactlyOrNull(n) ?: throw IllegalArgumentException("Iterable does not have exactly $n elements")
 }
 
-fun <T> List<T>.without(idx: Int): List<T> {
+fun <T> List<T>.withoutElementAtIndex(idx: Int): List<T> {
     val res = ArrayList(this)
     res.removeAt(idx)
     return res

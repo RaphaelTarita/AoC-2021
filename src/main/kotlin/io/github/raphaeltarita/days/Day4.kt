@@ -3,7 +3,7 @@ package io.github.raphaeltarita.days
 import io.github.raphaeltarita.structure.AoCDay
 import io.github.raphaeltarita.util.day
 import io.github.raphaeltarita.util.inputPath
-import io.github.raphaeltarita.util.without
+import io.github.raphaeltarita.util.withoutElementAtIndex
 import kotlinx.datetime.LocalDate
 import kotlin.io.path.readLines
 
@@ -104,8 +104,8 @@ object Day4 : AoCDay {
                     lastBoard = board
                     lastHitlist = hitlist
 
-                    boards = boards.without(idx)
-                    hitlists = hitlists.without(idx)
+                    boards = boards.withoutElementAtIndex(idx)
+                    hitlists = hitlists.withoutElementAtIndex(idx)
                 } else {
                     ++idx
                 }
