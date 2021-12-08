@@ -520,3 +520,7 @@ fun hashCode(vararg vals: Any?, prime: Int = 31): Int {
     }
     return res
 }
+
+inline fun <reified E : Enum<E>> Iterable<E>.negate(): Set<E> {
+    return enumValues<E>().toSet() - if (this is Set) this else this.toSet()
+}
