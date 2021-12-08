@@ -5,6 +5,7 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.EnumSet
 import kotlin.io.path.Path
 import kotlin.math.max
 import kotlin.math.min
@@ -270,6 +271,12 @@ fun <T, I : Iterable<T>> I.exactly(n: Int): I {
 fun <T> List<T>.without(idx: Int): List<T> {
     val res = ArrayList(this)
     res.removeAt(idx)
+    return res
+}
+
+infix fun <E : Enum<E>> EnumSet<E>.intersect(other: EnumSet<E>): EnumSet<E> {
+    val res = EnumSet.copyOf(this)
+    res.retainAll(other)
     return res
 }
 

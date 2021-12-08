@@ -3,9 +3,11 @@ package io.github.raphaeltarita.days
 import io.github.raphaeltarita.structure.AoCDay
 import io.github.raphaeltarita.util.day
 import io.github.raphaeltarita.util.inputPath
+import io.github.raphaeltarita.util.intersect
 import io.github.raphaeltarita.util.negate
 import io.github.raphaeltarita.util.pow
 import kotlinx.datetime.LocalDate
+import java.util.EnumSet
 import kotlin.io.path.readLines
 
 object Day8 : AoCDay {
@@ -16,7 +18,14 @@ object Day8 : AoCDay {
         MIDDLE,
         L_LEFT,
         L_RIGHT,
-        LOWER
+        LOWER;
+
+        companion object {
+            private val set = EnumSet.allOf(Segment::class.java)
+            fun valueSet(): EnumSet<Segment> {
+                return EnumSet.copyOf(set)
+            }
+        }
     }
 
     private enum class Digit(val segments: Set<Segment>, val corresponding: Int, val offSegments: Set<Segment> = segments.negate()) {
@@ -32,6 +41,11 @@ object Day8 : AoCDay {
         NINE(setOf(Segment.UPPER, Segment.U_LEFT, Segment.U_RIGHT, Segment.MIDDLE, Segment.L_RIGHT, Segment.LOWER), 9);
 
         companion object {
+            private val set = EnumSet.allOf(Digit::class.java)
+            fun valueSet(): EnumSet<Digit> {
+                return EnumSet.copyOf(set)
+            }
+
             fun fromSegments(segments: Set<Segment>): Digit {
                 for (d in values()) {
                     if (d.segments == segments) return d
@@ -47,8 +61,8 @@ object Day8 : AoCDay {
         return pattern.length == 2 || pattern.length == 3 || pattern.length == 4 || pattern.length == 7
     }
 
-    private val DIGITS_LEN_5 = setOf(Digit.TWO, Digit.THREE, Digit.FIVE)
-    private val DIGITS_LEN_6 = setOf(Digit.ZERO, Digit.SIX, Digit.NINE)
+    private val DIGITS_LEN_5 = EnumSet.of(Digit.TWO, Digit.THREE, Digit.FIVE)
+    private val DIGITS_LEN_6 = EnumSet.of(Digit.ZERO, Digit.SIX, Digit.NINE)
 
     private fun getInput(): List<Pair<List<String>, List<String>>> {
         return inputPath.readLines()
@@ -63,23 +77,23 @@ object Day8 : AoCDay {
     }
 
     private fun deduceSegments(from: List<String>): Map<Char, Segment> {
-        val digitsLeft = mutableSetOf(*Digit.values())
-        val possibilities = mutableMapOf(
-            'a' to setOf(*Segment.values()),
-            'b' to setOf(*Segment.values()),
-            'c' to setOf(*Segment.values()),
-            'd' to setOf(*Segment.values()),
-            'e' to setOf(*Segment.values()),
-            'f' to setOf(*Segment.values()),
-            'g' to setOf(*Segment.values())
+        val digitsLeft = Digit.valueSet()
+        val possibilities = mapOf(
+            'a' to Segment.valueSet(),
+            'b' to Segment.valueSet(),
+            'c' to Segment.valueSet(),
+            'd' to Segment.valueSet(),
+            'e' to Segment.valueSet(),
+            'f' to Segment.valueSet(),
+            'g' to Segment.valueSet()
         )
 
         fun narrow(deducedDigit: Digit, input: String) {
             for (c in possibilities.keys) {
                 if (c in input) {
-                    possibilities[c] = possibilities.getValue(c) intersect deducedDigit.segments
+                    possibilities.getValue(c).retainAll(deducedDigit.segments)
                 } else {
-                    possibilities[c] = possibilities.getValue(c) - deducedDigit.segments
+                    possibilities.getValue(c).removeAll(deducedDigit.segments)
                 }
             }
             digitsLeft.remove(deducedDigit)
@@ -92,7 +106,7 @@ object Day8 : AoCDay {
 
             var possibleSegments = input.map { possibilities.getValue(it) }
             possibleSegments = possibleSegments.partition { segments -> possibleSegments.count { it == segments } == segments.size }
-                .let { (fixed, other) -> other + fixed.distinct().flatten().map { hashSetOf(it) } }
+                .let { (fixed, other) -> other + fixed.distinct().flatten().map { EnumSet.of(it) } }
 
             val narrowed = possibleDigits.filter { digit ->
                 digit.segments.all { segment -> possibleSegments.any { segment in it } }
