@@ -10,12 +10,6 @@ import kotlin.io.path.readLines
 object Day9 : AoCDay {
     override val day: LocalDate = day(9)
 
-    private const val testInput = """2199943210
-3987894921
-9856789892
-8767896789
-9899965678"""
-
     private fun heightMap(): List<List<Int>> {
         return inputPath.readLines()
             .map { row -> row.map { it.digitToInt() } }
