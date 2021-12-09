@@ -312,6 +312,11 @@ fun <T, U : Comparable<U>> minOfBy(first: T, vararg others: T, selector: (T) -> 
     return if (selector(min) < selector(first)) min else first
 }
 
+fun <T, U : Comparable<U>> maxOfBy(first: T, vararg others: T, selector: (T) -> U): T {
+    val max = others.maxByOrNull(selector) ?: return first
+    return if (selector(max) > selector(first)) max else first
+}
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // string operations
 fun String.replaceMultiple(map: Map<String, String>, ignoreCase: Boolean = false): String {
