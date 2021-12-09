@@ -307,6 +307,11 @@ fun <T, U> comparatorForNested(innerComparator: Comparator<U>, selector: (T) -> 
     }
 }
 
+fun <T, U : Comparable<U>> minOfBy(first: T, vararg others: T, selector: (T) -> U): T {
+    val min = others.minByOrNull(selector) ?: return first
+    return if (selector(min) < selector(first)) min else first
+}
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // string operations
 fun String.replaceMultiple(map: Map<String, String>, ignoreCase: Boolean = false): String {
