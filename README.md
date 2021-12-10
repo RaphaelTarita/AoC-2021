@@ -1,6 +1,6 @@
-![](https://img.shields.io/badge/day%20📅-9-yellow)
-![](https://img.shields.io/badge/stars%20⭐-18-blue)
-![](https://img.shields.io/badge/days%20completed-9-green)
+![](https://img.shields.io/badge/day%20📅-10-yellow)
+![](https://img.shields.io/badge/stars%20⭐-20-blue)
+![](https://img.shields.io/badge/days%20completed-10-green)
 
 # AoC-2021
 
