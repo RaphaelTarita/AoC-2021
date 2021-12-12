@@ -34,8 +34,10 @@ import io.github.raphaeltarita.util.outputPathOfDay
 import io.github.raphaeltarita.util.today
 import kotlinx.datetime.LocalDate
 import java.nio.file.Path
+import java.nio.file.StandardOpenOption
 import kotlin.io.path.Path
 import kotlin.io.path.bufferedWriter
+import kotlin.io.path.deleteIfExists
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
@@ -71,8 +73,23 @@ object AoC {
         Day25.mapPair,
     )
 
-    private fun printFile(result: AoCResult, path: Path, config: IndentConfig) {
-        path.bufferedWriter().append(result.formatResult(config)).close()
+    private fun printFile(result: AoCResult, path: Path, config: IndentConfig, append: Boolean = false) {
+        path.bufferedWriter(
+            options = arrayOf(
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE,
+                if (append) StandardOpenOption.APPEND else StandardOpenOption.TRUNCATE_EXISTING
+            )
+        )
+            .append(result.formatResult(config)).close()
+    }
+
+    private fun printAll(cfg: IndentConfig, mapper: (LocalDate) -> AoCResult) {
+        DAYS_OUTPUT_PATH.deleteIfExists()
+        executionlist.keys
+            .sorted()
+            .map(mapper)
+            .forEach { printFile(it, DAYS_OUTPUT_PATH, cfg, true) }
     }
 
     fun executeSimple(d: LocalDate): AoCResult {
@@ -169,14 +186,10 @@ object AoC {
     ) = printTimed(today(), iterations, warmups, cfg)
 
     fun printAllSimple(cfg: IndentConfig = IndentConfig()) {
-        executionlist.keys
-            .sorted()
-            .forEach { printFile(executeSimple(it), DAYS_OUTPUT_PATH, cfg) }
+        printAll(cfg) { executeSimple(it) }
     }
 
     fun printAllTimed(iterations: Int = 100, warmups: Int = 0, cfg: IndentConfig = IndentConfig()) {
-        executionlist.keys
-            .sorted()
-            .map { printFile(executeTimed(it, iterations, warmups), DAYS_OUTPUT_PATH, cfg) }
+        printAll(cfg) { executeTimed(it, iterations, warmups) }
     }
 }
