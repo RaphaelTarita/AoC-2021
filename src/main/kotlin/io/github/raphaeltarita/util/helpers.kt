@@ -6,6 +6,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.EnumSet
+import kotlin.experimental.ExperimentalTypeInference
 import kotlin.io.path.Path
 import kotlin.math.max
 import kotlin.math.min
@@ -278,6 +279,88 @@ infix fun <E : Enum<E>> EnumSet<E>.intersect(other: EnumSet<E>): EnumSet<E> {
     val res = EnumSet.copyOf(this)
     res.retainAll(other)
     return res
+}
+
+interface Graph<V> {
+    val vertices: Set<V>
+    fun isAdjacent(from: V, to: V): Boolean
+    fun adjacentVertices(v: V): Set<V>
+
+    fun isBidiAdjacent(v1: V, v2: V): Boolean {
+        return isAdjacent(v1, v2) && isAdjacent(v2, v1)
+    }
+
+    operator fun get(v: V): Set<V> = adjacentVertices(v)
+}
+
+interface MutableGraph<V> : Graph<V> {
+    fun addVertex(v: V)
+    fun addEdge(from: V, to: V)
+    fun removeVertex(v: V)
+    fun removeEdge(from: V, to: V)
+
+    fun addUndirectedEdge(v1: V, v2: V) {
+        addEdge(v1, v2)
+        addEdge(v2, v1)
+    }
+
+    fun removeUndirectedEdge(v1: V, v2: V) {
+        removeEdge(v1, v2)
+        removeEdge(v2, v1)
+    }
+}
+
+class AdjacenceListGraph<V> private constructor(
+    private val adj: MutableMap<V, MutableSet<V>>,
+    @Suppress("UNUSED_PARAMETER") ctorFlag: Unit
+) : MutableGraph<V> {
+    constructor() : this(mutableMapOf(), Unit)
+    constructor(adj: Map<V, Set<V>>) : this(adj.mapValues { (_, v) -> v.toMutableSet() }.toMutableMap(), Unit)
+    constructor(copyFrom: Graph<V>) : this(copyFrom.vertices.associateWith { copyFrom[it] })
+
+    override val vertices
+        get() = adj.keys.toSet()
+
+    override fun isAdjacent(from: V, to: V): Boolean {
+        return adj[from]?.contains(to) ?: false
+    }
+
+    override fun adjacentVertices(v: V): Set<V> {
+        return adj[v] ?: emptySet()
+    }
+
+    override fun addVertex(v: V) {
+        if (v !in adj) {
+            adj[v] = mutableSetOf()
+        }
+    }
+
+    override fun addEdge(from: V, to: V) {
+        val existing = adj[from]
+        if (existing != null) {
+            existing.add(to)
+        } else {
+            adj[from] = mutableSetOf(to)
+        }
+    }
+
+    override fun removeVertex(v: V) {
+        adj.remove(v)
+        for (vertices in adj.values) {
+            vertices.remove(v)
+        }
+    }
+
+    override fun removeEdge(from: V, to: V) {
+        adj[from]?.remove(to)
+    }
+}
+
+@OptIn(ExperimentalTypeInference::class)
+inline fun <V> buildGraph(@BuilderInference builderAction: MutableGraph<V>.() -> Unit): Graph<V> {
+    val mutable = AdjacenceListGraph<V>()
+    mutable.builderAction()
+    return mutable
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
