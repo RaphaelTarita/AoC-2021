@@ -363,6 +363,19 @@ inline fun <V> buildGraph(@BuilderInference builderAction: MutableGraph<V>.() ->
     return mutable
 }
 
+fun <T> Iterable<T>.splitAt(pos: Int): Pair<List<T>, List<T>> {
+    val collectionSize = if (this is Collection) size else null
+    if (pos <= 0) return emptyList<T>() to toList()
+    if (collectionSize != null && pos >= collectionSize) return toList() to emptyList()
+
+    val first = ArrayList<T>(pos)
+    val second = ArrayList<T>(collectionSize?.minus(pos) ?: 10)
+    for ((idx, t) in withIndex()) {
+        (if (idx < pos) first else second) += t
+    }
+    return first to second
+}
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // comparisons
 
