@@ -33,3 +33,11 @@ fun <T, U : Comparable<U>> maxOfBy(first: T, vararg others: T, selector: (T) -> 
     val max = others.maxByOrNull(selector) ?: return first
     return if (selector(max) > selector(first)) max else first
 }
+
+// inspired by: https://github.com/korlibs/kds
+// file:        kds/src/commonMain/kotlin/com/soywiz/kds/comparator/ComparatorExt.kt
+// revision:    cc2397e7a575412dfa6e3850317c59b168356b76
+// date:        15.12.2021
+object ComparatorByComparable : Comparator<Comparable<Any>> {
+    override fun compare(o1: Comparable<Any>, o2: Comparable<Any>): Int = o1.compareTo(o2)
+}
