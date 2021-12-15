@@ -1,9 +1,9 @@
 package io.github.raphaeltarita.days
 
 import io.github.raphaeltarita.structure.AoCDay
-import io.github.raphaeltarita.util.Graph
-import io.github.raphaeltarita.util.buildGraph
 import io.github.raphaeltarita.util.day
+import io.github.raphaeltarita.util.ds.graph.Graph
+import io.github.raphaeltarita.util.ds.graph.buildGraph
 import io.github.raphaeltarita.util.inputPath
 import kotlinx.datetime.LocalDate
 import kotlin.io.path.readLines
