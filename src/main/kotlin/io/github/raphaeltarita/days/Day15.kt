@@ -41,7 +41,6 @@ object Day15 : AoCDay {
             minPaths.getValue(o1) - minPaths.getValue(o2)
         }
 
-        var itr = 0
         while (heap.isNotEmpty()) {
             val current = heap.popMin()
             processed += current
@@ -58,7 +57,6 @@ object Day15 : AoCDay {
                     heap.decreaseKey(heapIdx, adj)
                 }
             }
-            ++itr
         }
 
         return minPaths.getValue((xsize - 1) to (ysize - 1))
