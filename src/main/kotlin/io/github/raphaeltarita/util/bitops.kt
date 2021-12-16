@@ -1,13 +1,18 @@
 package io.github.raphaeltarita.util
 
-private val HEX = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f')
+val HEX_CHARS = charArrayOf(
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+)
+val HEX_INV = arrayOf(
+    "0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"
+)
 
 fun ByteArray.toHexString(offset: Int = 0): String {
     val hexChars = CharArray(size * 2)
     for (i in indices) {
         val v = this[i + offset].toInt() and 0xFF
-        hexChars[i * 2] = HEX[v ushr 4]
-        hexChars[i * 2 + 1] = HEX[v and 0x0F]
+        hexChars[i * 2] = HEX_CHARS[v ushr 4]
+        hexChars[i * 2 + 1] = HEX_CHARS[v and 0x0F]
     }
     return hexChars.joinToString("")
 }
