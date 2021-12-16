@@ -60,11 +60,11 @@ class ArrayHeap<E> private constructor(private val backingList: ArrayList<E>, pr
         var parentPos = pos
         var childPos = child(pos)
         while (childPos < backingList.size) {
-            if (comp.compare(backingList[childPos], backingList[childPos + 1]) > 0) ++childPos
-            if (comp.compare(backingList[parentPos], backingList[childPos]) < 0) {
+            if (childPos + 1 < backingList.size && comp.compare(backingList[childPos], backingList[childPos + 1]) > 0) ++childPos
+            if (comp.compare(backingList[childPos], backingList[parentPos]) < 0) {
                 backingList.swap(parentPos, childPos)
                 parentPos = childPos
-                childPos = child(pos)
+                childPos = child(childPos)
             } else break
         }
 
@@ -91,7 +91,7 @@ class ArrayHeap<E> private constructor(private val backingList: ArrayList<E>, pr
         var childPos = backingList.lastIndex
         var parentPos = parent(childPos)
         while (childPos != parentPos) {
-            if (comp.compare(backingList[childPos], backingList[parentPos]) > 0) {
+            if (comp.compare(backingList[childPos], backingList[parentPos]) < 0) {
                 backingList.swap(parentPos, childPos)
                 childPos = parentPos
                 parentPos = parent(parentPos)
@@ -132,6 +132,10 @@ class ArrayHeap<E> private constructor(private val backingList: ArrayList<E>, pr
         return modified
     }
 
+    override operator fun get(pos: Int): E {
+        return backingList[pos]
+    }
+
     override fun minOrNull(): E? {
         return backingList.firstOrNull()
     }
@@ -139,5 +143,16 @@ class ArrayHeap<E> private constructor(private val backingList: ArrayList<E>, pr
     override fun popMin(): E {
         if (isEmpty()) throw NoSuchElementException("Heap is empty")
         return deleteAt(0)
+    }
+
+    override fun decreaseKey(pos: Int, newVal: E) {
+        var current = pos
+        var parent = parent(current)
+        backingList[current] = newVal
+        while (current != 0 && comp.compare(backingList[parent], backingList[current]) > 0) {
+            backingList.swap(current, parent)
+            current = parent
+            parent = parent(current)
+        }
     }
 }

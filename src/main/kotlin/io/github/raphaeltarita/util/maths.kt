@@ -63,3 +63,7 @@ infix fun Double.epsilonEq(other: Double): Boolean {
     val epsilon = kotlin.math.max(ulp, other.ulp)
     return this > (other - epsilon) && this < (other + epsilon)
 }
+
+fun Int.inModRange(a: Int, b: Int): Int {
+    return this - (b - a) * ((this - a) / (b - a))
+}
