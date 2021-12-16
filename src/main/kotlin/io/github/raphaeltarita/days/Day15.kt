@@ -31,7 +31,6 @@ object Day15 : AoCDay {
         val xsize = weights.first().size
         val ysize = weights.size
 
-        val hops = mutableMapOf<Twin<Int>, Twin<Int>>()
         val processed = mutableSetOf(start)
         val minPaths = adjacentTo(start, xsize, ysize).associateWith { (x, y) -> weights[y][x].toInt() }
             .toMutableMap()
@@ -44,7 +43,6 @@ object Day15 : AoCDay {
 
         var itr = 0
         while (heap.isNotEmpty()) {
-            require(heap.min() == heap.minByOrNull { minPaths.getValue(it) }) { "failed in iteration $itr" }
             val current = heap.popMin()
             processed += current
             if (current == end) break
@@ -55,11 +53,9 @@ object Day15 : AoCDay {
                 if (heapIdx < 0) {
                     minPaths[adj] = nextCost
                     heap += adj
-                    hops[adj] = current
                 } else if (nextCost < minPaths.getValue(heap[heapIdx])) {
                     minPaths[adj] = nextCost
                     heap.decreaseKey(heapIdx, adj)
-                    hops[adj] = current
                 }
             }
             ++itr
@@ -79,10 +75,9 @@ object Day15 : AoCDay {
         val grid = getInput()
         val xsize = grid.first().size
         val ysize = grid.size
-        val fullGrid = MutableList(5 * ysize) { MutableList(5 * xsize) { 0.toByte() } }
-        for (y in 0 until (ysize * 5)) {
-            for (x in 0 until (xsize * 5)) {
-                fullGrid[y][x] = ((grid[y % ysize][x % xsize] + (x / xsize + y / ysize)).inModRange(1, 10)).toByte()
+        val fullGrid = List(5 * ysize) { y ->
+            List(5 * xsize) { x ->
+                ((grid[y % ysize][x % xsize] + (x / xsize + y / ysize)).inModRange(1, 10)).toByte()
             }
         }
         return dijkstra(fullGrid, 0 to 0, (xsize * 5 - 1) to (ysize * 5 - 1))
